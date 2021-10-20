@@ -1,0 +1,17 @@
+version: 1
+from: "nfra/kickstart-flavor-php:unstable"
+
+packages: ["php8.0-curl", "php8.0-http", "php8.0-raphf", "php8.0-xml"]
+
+config_file:
+  template: "config.php.dist"
+  target: "config.php"
+
+command:
+  build:
+    ##- "sudo apt-get update && sudo apt-get install -y php-libsodium"
+    - "composer update"
+
+  test:
+    - "phpunit"
+

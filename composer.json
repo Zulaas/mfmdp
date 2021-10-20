@@ -1,0 +1,21 @@
+{
+  "name": "project/name",
+  "type": "project",
+  "license": "MIT",
+  "authors": [
+  ],
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    },
+    "files": [
+    ]
+  },
+  "require": {
+    "php": ">=8.0"
+  },
+  "bin": [
+  ],
+  "require-dev": {
+  }
+}
