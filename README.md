@@ -1,7 +1,7 @@
 # mfmdp
 Micro-Frontend Masterthesis demo project
 
-#start the project
+# start the project
 
 The first to do is to install kickstart, therefore follow the instructions on http://nfra.infracamp.org/.
 
