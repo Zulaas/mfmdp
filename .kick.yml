@@ -9,7 +9,7 @@ config_file:
 
 command:
   build:
-    ##- "sudo apt-get update && sudo apt-get install -y php-libsodium"
+    - "sudo a2enmod headers"
     - "composer update"
 
   test:
