@@ -1,13 +1,17 @@
-class Microfrontend{
+class Microfrontend {
 
   // sends postMessage events.
-  static message(message){
+  static message(message) {
     parent.postMessage(message, "http://localhost");
   }
 
   //creates postMessage event
   static adjust_frame_height(height) {
-    this.message({type: "adjust_frame_height", height: height, path: location.origin + location.pathname + location.hash});
+    this.message({
+      type: "adjust_frame_height",
+      height: height,
+      path: location.origin + location.pathname + location.hash
+    });
   }
 
 }
