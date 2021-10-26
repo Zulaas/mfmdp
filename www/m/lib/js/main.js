@@ -13,7 +13,6 @@
   let dispatcher = new Dispatcher(iframe);
   console.log(dispatcher)
   dispatcher.addListener('adjust_frame_height', adjustFrameHeight)
-  dispatcher.addListener('set_route', setRoute)
   dispatcher.register()
 
 })();
@@ -26,11 +25,6 @@ function adjustFrameHeight(data) {
       iframe.style.height = data.height + "px";
     }
   }
-}
-
-function setRoute(data) {
-  console.log(data)
-  window.history.pushState(null,null, data.src);
 }
 
 
