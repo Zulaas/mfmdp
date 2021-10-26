@@ -12,3 +12,15 @@ After the installation, start the container with the following command:
 ```
 
 After the container has started, the website can be opened via localhost.
+
+# Projekt Setup
+
+simulation mehrer Host name (interne Auflösung danach an ...)
+
+.tld => topleveldomain (gibt es halt als domain nicht damit klar ist es ist ein externer host)
+
+add this line to /etc/hosts
+```text
+127.0.0.1 m.tld r1.tld r2.tld
+```
+

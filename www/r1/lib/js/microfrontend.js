@@ -4,7 +4,7 @@ class Microfrontend {
   static message(message) {
     //the origin of the target window should be restricted
     //in this case to http://localhost to prevent other pages from receiving this message
-    parent.postMessage(message, "http://localhost");
+    parent.postMessage(message, "http://m.tld");
   }
 
   //creates postMessage event for frame height
@@ -17,9 +17,9 @@ class Microfrontend {
   }
 
   //creates postMessage event for changing the iframe src
-  static updateIframe(src) {
+  static setRoute(src) {
     this.message({
-      type: "updateSrc",
+      type: "setRoute",
       src: src,
       path: location.origin + location.pathname + location.hash
     });
