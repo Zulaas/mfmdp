@@ -44,9 +44,6 @@ class Router {
     }
   }
 
-  validateRoute(route){
-
-  }
 }
 
 

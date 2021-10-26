@@ -11,7 +11,11 @@
 
   let iframe = document.getElementById('myiframe');
   let dispatcher = new Dispatcher(iframe);
-  dispatcher.addListener('adjust_frame_height', )
+  console.log(dispatcher)
+  dispatcher.addListener('adjust_frame_height', adjustFrameHeight)
+  dispatcher.addListener('set_route', setRoute)
+  dispatcher.register()
+
 })();
 
 function adjustFrameHeight(data) {
@@ -24,24 +28,11 @@ function adjustFrameHeight(data) {
   }
 }
 
-function
-
-//check which event type ist triggered
-switch (data.type) {
-  //iframe height changed event
-  case "adjust_frame_height":
-
-    }
-    break;
-  case "setRoute":
-    //validates the src parameter if its in a list of allowed locations
-
-    if((data.src)){
-      return;
-    }
-    window.history.pushState(null,null, data.src);
-    break;
+function setRoute(data) {
+  console.log(data)
+  window.history.pushState(null,null, data.src);
 }
+
 
 
 

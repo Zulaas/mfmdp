@@ -10,7 +10,7 @@ class Dispatcher{
   }
 
   register(){
-    window.addEventListener("message", this.dispatch, false);
+    window.addEventListener("message", (e)=>this.dispatch(e), false);
   }
 
   dispatch(event) {
@@ -25,6 +25,7 @@ class Dispatcher{
     if (typeof data !== "object")
       return;
 
+    console.log(data, this.callbacks)
     if (this.callbacks[data.type] === 'undefined') {
       console.error('Event not registered', data)
       throw 'Event not registered' + data.type
