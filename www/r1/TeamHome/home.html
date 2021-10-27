@@ -10,9 +10,49 @@
 <div>
     <div class="bg-light p-5 rounded">
         <div class="col-sm-8 mx-auto">
-            <h1>Micro-Frontend examples</h1>
-            <p>This is a Micro-Frontend example. The Micro-Frontends should extend in height and to a <code>100%</code>
-                width.</p>
+            <h1>Explanation</h1>
+            <p>
+                This Micro-Frontend example shows the <code>window.postMessage()</code>-method which safely enables
+                cross-origin
+                communication between Iframes and parent elements.
+                Furthermore, it demonstrates the <i>hybrid integration approach for micro-frontend based on iframes</i>,
+                where HTML parts are loaded from different resource servers into the respective iframe.
+            </p>
+
+            <p>
+                The Micro-Frontends should extend in height and to a <code>100%</code> width.
+                Therefore, a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage"
+                                class="link-primary" target="_blank">postMessage</a>
+                event must be raised in the micro frontends, see <i>/www/r1/lib/js/microfrontend.js</i>.
+                This is because the micro frontend encapsulated in the iframe is not allowed
+                to change anything in the parent elements.
+                Open the developer tools <b>F12</b> and look at the <code>console.log()</code>-statments
+                of the events when navigating throw the page.
+                The logs should look like this:
+            </p>
+
+            <img src="/../lib/pictures/cross-communication%20Event-Logs.png" alt="Cross-Communication Event-Logs"
+                 class="py-3 rounded img-fluid">
+
+            <p>
+                The events behind this logs are caught and interpreted in <i>/www/m/lib/js/main.js</i>.
+            </p>
+
+            <p>
+                When changing the page, it can also be observed that the page does not reload, but the content of the
+                iframe.
+                Responsible for this is the <i>/www/m/lib/js/router.js</i>.
+                This checks every 100 milliseconds if the URL path has changed.
+                If this has changed it adjusts the content of the iframe.
+                The logs for this should look like this:
+            </p>
+
+            <img src="/../lib/pictures/route-iframe.png" alt="Route iFrame" class="py-3 rounded img-fluid">
+
+            <p>
+                Navigation throw the page and understand how the Events works.
+            </p>
+
         </div>
     </div>
 

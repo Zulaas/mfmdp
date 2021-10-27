@@ -16,7 +16,7 @@ At the moment, kickstart depends on docker. But this might change over time.
 To run this project on your local pc for development, you need
 ***Linux, MacOS*** or ***Windows10 with WSL2*** with [cURL](https://en.wikipedia.org/wiki/CURL)
 and [docker](https://en.wikipedia.org/wiki/Docker_(software)).
-See the [Getting started guilde](https://infracamp.org/getting-started) for
+See the [Getting started guilde](https://nfra.infracamp.org/) for
 detailed setup instructions.
 
 Open the command-line and run
