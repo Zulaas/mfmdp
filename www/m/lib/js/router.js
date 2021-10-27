@@ -40,7 +40,7 @@ class Router {
     for (let nav of document.getElementsByTagName("nav")) {
       for (let elem of nav.getElementsByTagName("a")) {
         elem.onclick = (e) => {
-          window.history.pushState(null, null, elem.href);
+          window.history.pushState(null, null, elem.getAttribute('href'));
           e.stopPropagation();
           return false;
         }
