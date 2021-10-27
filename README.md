@@ -1,26 +1,17 @@
 # mfmdp
+
 Micro-Frontend Masterthesis demo project
 
-# start the project
+## Project start
 
-The first to do is to install kickstart, therefore follow the instructions on http://nfra.infracamp.org/.
+There are a few things that need to be done to start the project.
+Please follow the instructions on: [Developer Settings](/README_DEV.md)
 
-After the installation, start the container with the following command:
-
-```ssh
-    kickstart
+After all instructions have been followed, the project can start on the console with:
+```shell
+    $ kickstart
 ```
 
-After the container has started, the website can be opened via localhost.
+After starting the container, the website can be opened via the following [link](http://m.tld)
 
-# Projekt Setup
-
-simulation mehrer Host name (interne Auflösung danach an ...)
-
-.tld => topleveldomain (gibt es halt als domain nicht damit klar ist es ist ein externer host)
-
-add this line to /etc/hosts
-```text
-127.0.0.1 m.tld r1.tld r2.tld
-```
-
+The displayed page gives further information about the functionality of the project.

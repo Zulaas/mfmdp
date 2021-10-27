@@ -16,15 +16,6 @@ class Microfrontend {
     });
   }
 
-  //creates postMessage event for changing the iframe src
-  static setRoute(src) {
-    this.message({
-      type: "set_route",
-      src: src,
-      path: location.origin + location.pathname + location.hash
-    });
-  }
-
 }
 
 (() => {
