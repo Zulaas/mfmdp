@@ -20,7 +20,10 @@ class Router {
 
       //if route has changed change iframe src
       let iframe = document.getElementById("myiframe")
+      let container = iframe.parentNode;
+      iframe.remove()
       iframe.setAttribute("src", this.routes[pathname]);
+      container.append(iframe);
       console.log('route changed to:', '\'' + pathname + '\'', 'according to map set src-attribute from iframe to: ' + '\'' + this.routes[pathname] + '\'')
       console.log(iframe)
 
@@ -40,7 +43,7 @@ class Router {
     for (let nav of document.getElementsByTagName("nav")) {
       for (let elem of nav.getElementsByTagName("a")) {
         elem.onclick = (e) => {
-          window.history.pushState(null, null, elem.getAttribute('href'));
+          window.history.pushState({}, '', elem.getAttribute('href'));
           e.stopPropagation();
           return false;
         }
