@@ -1,4 +1,5 @@
 
+//added a EventListener for the Custom 'onRouteChange' Event triggered in the router
 window.addEventListener('onRouteChange', changeActiveAttribute)
 
 //Changed Active class on a tags when location is changed

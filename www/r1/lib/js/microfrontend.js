@@ -3,7 +3,7 @@ class Microfrontend {
   // sends postMessage events.
   static message(message) {
     //the origin of the target window should be restricted
-    //in this case to http://localhost to prevent other pages from receiving this message
+    //in this case to http://m.tld to prevent other pages from receiving any of this messages
     parent.postMessage(message, "http://m.tld");
   }
 
