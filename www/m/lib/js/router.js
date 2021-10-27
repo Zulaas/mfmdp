@@ -21,6 +21,7 @@ class Router {
       //if route has changed change iframe src
       let iframe = document.getElementById("myiframe")
       let container = iframe.parentNode;
+      //remove iframe to avoid generating history-entry by src change
       iframe.remove()
       iframe.setAttribute("src", this.routes[pathname]);
       container.append(iframe);
