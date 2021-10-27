@@ -1,4 +1,3 @@
-
 class Router {
 
   constructor(routes) {
@@ -10,12 +9,12 @@ class Router {
     //checks every 100 milliseconds if the current Route has changed
     window.setInterval(() => {
       //return if route has not changed
-      if ( location.pathname === pathname)
+      if (location.pathname === pathname)
         return;
 
       //if route is not defined throw exception
       pathname = location.pathname
-      if(this.routes[pathname] === 'undefined'){
+      if (this.routes[pathname] === 'undefined') {
         throw 'Route not defined:' + pathname;
       }
 
@@ -31,15 +30,15 @@ class Router {
     }, 100);
 
     //adds an MutationObserver to react on DOM-element changes and disable up comming hrefs in <a>-tags
-    var mutationObserver = new MutationObserver(this.disableHrefs);
-    mutationObserver.observe(window.document, { childList:true, subtree:true })
+    var mutationObserver = new MutationObserver(this.disableHrefsInNavbar);
+    mutationObserver.observe(window.document, {childList: true, subtree: true})
 
   }
 
   //disables all hrefs in navigation on <a>-tags to prefend the mainpage from reloading
-  disableHrefs(e){
-    for(let nav of document.getElementsByTagName("nav")){
-      for(let elem of nav.getElementsByTagName("a")) {
+  disableHrefsInNavbar(e) {
+    for (let nav of document.getElementsByTagName("nav")) {
+      for (let elem of nav.getElementsByTagName("a")) {
         elem.onclick = (e) => {
           window.history.pushState(null, null, elem.href);
           e.stopPropagation();

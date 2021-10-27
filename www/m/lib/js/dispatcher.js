@@ -1,4 +1,4 @@
-class Dispatcher{
+class Dispatcher {
 
   constructor(iframe) {
     this.callbacks = {}
@@ -6,13 +6,13 @@ class Dispatcher{
   }
 
   //adds a callback function with type
-  addListener(type, callback){
+  addListener(type, callback) {
     this.callbacks[type] = callback
   }
 
   //registered the EventListener
-  register(){
-    window.addEventListener("message", (e)=>this.dispatch(e), false);
+  register() {
+    window.addEventListener("message", (e) => this.dispatch(e), false);
   }
 
   dispatch(event) {
