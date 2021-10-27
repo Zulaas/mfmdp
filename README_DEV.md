@@ -33,6 +33,9 @@ Save changes and close the text editor.
 
 This allows to resolve the three hostnames (m.tld ; r1.tld ; r2.tld) to localhost.
 
+The hostnames are abbreviations for: m.tld => main.tld / r1.tld => resources1.tld / r2.tld => resources2.tld
+
+
 The domain .tld was taken because it is not an official top-level domain see [list of top-level domains](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains) and 
 it is the abbreviation for [Top-Level-Domains](https://en.wikipedia.org/wiki/Top-level_domain).
 

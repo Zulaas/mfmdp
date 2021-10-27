@@ -22,7 +22,8 @@ class Router {
       //if route has changed change iframe src
       let iframe = document.getElementById("myiframe")
       iframe.setAttribute("src", this.routes[pathname]);
-      console.log('route changed:', pathname, this.routes[pathname], iframe )
+      console.log('route changed to:', '\'' + pathname + '\'', 'according to map set src-attribute from iframe to: ' + '\'' + this.routes[pathname] + '\'')
+      console.log(iframe)
 
       //creates custom 'onChangeEvent' to trigger change of active class
       window.dispatchEvent(new CustomEvent('onRouteChange', {detail: pathname}));
@@ -35,14 +36,15 @@ class Router {
 
   }
 
-  //disables all hrefs on <a>-tags to prefend the mainpage from reloading
+  //disables all hrefs in navigation on <a>-tags to prefend the mainpage from reloading
   disableHrefs(e){
-    console.log("dom changed:" , e)
-    for(let elem of document.getElementsByTagName("a")) {
-      elem.onclick = (e) => {
-        window.history.pushState(null, null, elem.href);
-        e.stopPropagation();
-        return false;
+    for(let nav of document.getElementsByTagName("nav")){
+      for(let elem of nav.getElementsByTagName("a")) {
+        elem.onclick = (e) => {
+          window.history.pushState(null, null, elem.href);
+          e.stopPropagation();
+          return false;
+        }
       }
     }
   }

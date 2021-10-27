@@ -33,7 +33,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Eighth navbar example">
         <div class="container">
-            <a class="navbar-brand" href="#">Micro-Frontend Example</a>
+            <a class="navbar-brand" href="/">Micro-Frontend Example</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07"
                     aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -63,7 +63,8 @@
     </nav>
 
     <div class="container">
-        <iframe id="myiframe" sandbox="allow-scripts"></iframe>
+        <!-- sandboxed mode to allow scripts and allow to open new tabs from iframe -->
+        <iframe id="myiframe" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"></iframe>
     </div>
 </main>
 
