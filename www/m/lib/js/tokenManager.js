@@ -7,25 +7,35 @@ class TokenManager {
     // this.scopes = scopes; Todo initialize scopes als array und dann einfach an den request anhängen
   }
 
+  //logout function
+  logout(){
+    sessionStorage.removeItem(this.sessionStorageKey);
+    let params = {
+      'client_id': this.clientId,
+      'returnTo': 'http://m.tld'
+    };
+    window.location.replace(this.oauthServer + '/logout?' + this.makeQueryParams(params))
+  }
+
   //PKCE Flow function to get valid ID and Access Token
   loadToken() {
     //check if we already have a token
-    if (localStorage.getItem(this.sessionStorageKey)) {
-      return localStorage.getItem(this.sessionStorageKey); //Todo was passiert wenn wir ein Token haben ?
+    if (sessionStorage.getItem(this.sessionStorageKey)) {
+      return sessionStorage.getItem(this.sessionStorageKey); //Todo was passiert wenn wir ein Token haben ?
     }
 
     //if get redirected from authorize endpoint with code and state
     let urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('code') && urlParams.has('state')) {
       let code = urlParams.get('code');
-      if (!localStorage.getItem('verifier')) {
+      if (!sessionStorage.getItem('verifier')) {
         throw 'verifier isn\'t set in sessionStorage';
       }
-      if (!localStorage.getItem('state')) {
+      if (!sessionStorage.getItem('state')) {
         throw 'state isn\'t set in sessionStorage';
       }
-      let verifier = localStorage.getItem('verifier');
-      let state = localStorage.getItem('state');
+      let verifier = sessionStorage.getItem('verifier');
+      let state = sessionStorage.getItem('state');
       if (state !== urlParams.get('state')) {
         throw 'state is not valid';
       }
@@ -42,13 +52,11 @@ class TokenManager {
         .then(data => {
           console.log(data);
           window.history.replaceState({}, '', location.pathname);
-          //Todo validate Token
-          localStorage.setItem(this.sessionStorageKey, data.access_token)
+          sessionStorage.setItem(this.sessionStorageKey, data.access_token)
         })
         .catch((error) => {
           throw error
         });
-      //Todo error part and success part
 
       return
     }
@@ -56,8 +64,8 @@ class TokenManager {
     //initial request to get authorized
     let verifier = this.getRandomString(32)
     let state = this.getRandomString(32)
-    localStorage.setItem("verifier", verifier);
-    localStorage.setItem('state', state);
+    sessionStorage.setItem("verifier", verifier);
+    sessionStorage.setItem('state', state);
 
     let challenge = Sha256.hash(verifier);
     let params = {
@@ -113,5 +121,15 @@ class TokenManager {
     });
     return response.json();
   }
+
+  parseJwt (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+  };
 
 }

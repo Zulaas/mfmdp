@@ -8,7 +8,8 @@
   router.register();
 
   let iframe = document.getElementById('myiframe');
-  let dispatcher = new Dispatcher(iframe);
+  let origins = ['http://r1.tld', 'http://r2.tld'];
+  let dispatcher = new Dispatcher(iframe, origins);
   console.log(dispatcher)
   dispatcher.addListener('adjust_frame_height', adjustFrameHeight)
   dispatcher.register()
