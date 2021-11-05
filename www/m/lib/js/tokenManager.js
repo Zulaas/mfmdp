@@ -53,6 +53,8 @@ class TokenManager {
           //request to get ID and Access token from token Endpoint
           this.postData(this.oauthServer + '/oauth/token', this.getTokenParams(urlParams))
             .then(data => {
+              sessionStorage.removeItem('state');
+              sessionStorage.removeItem('verifier');
               //replaces code and state
               window.history.replaceState({}, '', location.pathname);
               //saves id and access Token in sessionStorage
