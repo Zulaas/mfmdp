@@ -14,6 +14,34 @@
   dispatcher.addListener('adjust_frame_height', adjustFrameHeight)
   dispatcher.register()
 
+  //starts the PKCE Flow
+  let tokenManager = new TokenManager('client1', 'http://localhost:8080', 'ID-Token', 'Access-Token')
+  tokenManager.loadToken().then(
+    (data) => {
+      document.getElementById('tokenPayload').innerText = JSON.stringify(tokenManager.parseJwt(data.id_token), undefined, 2);
+      document.getElementById('successMsg').hidden = false;
+      document.getElementById("errorMsg").hidden = true;
+      document.getElementById('navbar').hidden = false;
+      let lbtn = document.getElementById('logoutBtn');
+      lbtn.hidden = false;
+      lbtn.onclick = function(event){
+        tokenManager.logout();
+      }
+      window.setInterval(() => {
+        tokenManager.checkExpires();
+      }, 1000);
+    }
+  ).catch(error => {
+      console.log(error);
+      let ele = document.getElementById("errorMsg");
+      ele.innerText = error;
+      ele.hidden = false;
+      document.getElementById('navbar').hidden = true;
+      document.getElementById('logoutBtn').hidden = true;
+      document.getElementById('successMsg').hidden = true;
+    }
+  );
+
 })();
 
 function adjustFrameHeight(data) {

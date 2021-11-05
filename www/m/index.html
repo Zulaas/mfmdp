@@ -16,7 +16,7 @@
 <body>
 
 <main>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Eighth navbar example">
+    <nav hidden id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Eighth navbar example">
         <div class="container">
             <a class="navbar-brand" href="/">Micro-Frontend Example</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07"
@@ -40,7 +40,7 @@
                     </li>
                 </ul>
                 <div class="col-md-3 text-end">
-                    <button type="button" class="btn btn-outline-primary me-2" onclick="tokenManager.logout()">Logout
+                    <button hidden id="logoutBtn" type="button" class="btn btn-outline-primary me-2" >Logout
                     </button>
                 </div>
             </div>
@@ -76,33 +76,11 @@
 <script src="/lib/js/router.js"></script>
 <!-- import router.js -->
 <script src="/lib/js/dispatcher.js"></script>
-<!-- import after all other parts main.js -->
-<script src="/lib/js/main.js"></script>
 <!-- import sha256.js -->
 <script src="/lib/js/sha256.js"></script>
 <!-- import tokenManager.js -->
 <script src="/lib/js/tokenManager.js"></script>
-<!-- calls the authorize URL -->
-<script>
-    let tokenManager = new TokenManager('client1', 'http://localhost:8080', 'ID-Token', 'Access-Token')
-    tokenManager.loadToken().then(
-        (data) => {
-            document.getElementById('tokenPayload').innerText = JSON.stringify(tokenManager.parseJwt(data.id_token), undefined, 2);
-            document.getElementById('successMsg').hidden = false;
-            document.getElementById("errorMsg").hidden = true;
-            window.setInterval(() => {
-                tokenManager.checkExpires();
-            }, 1000);
-        }
-    ).catch(error => {
-            console.log(error);
-            let ele = document.getElementById("errorMsg");
-            ele.innerText = error;
-            ele.hidden = false;
-            document.getElementById('successMsg').hidden = true;
-        }
-    );
-
-</script>
+<!-- import after all other parts main.js -->
+<script src="/lib/js/main.js"></script>
 </body>
 </html>
