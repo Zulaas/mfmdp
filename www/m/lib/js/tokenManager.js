@@ -51,7 +51,13 @@ class TokenManager {
         //if get redirected from authorize endpoint with code and state
         if (urlParams.has('code') && urlParams.has('state')) {
           //request to get ID and Access token from token Endpoint
-          this.postData(this.oauthServer + '/oauth/token', this.getTokenParams(urlParams))
+          let params;
+          try{
+            params = this.getTokenParams(urlParams);
+          } catch (e) {
+            return reject({'error': e, 'error_code': 'exception'})
+          }
+          this.postData(this.oauthServer + '/oauth/token', params)
             .then(data => {
               sessionStorage.removeItem('state');
               sessionStorage.removeItem('verifier');
@@ -70,8 +76,7 @@ class TokenManager {
           return
         }
 
-        //initial request to get authorized
-        //redirect to authorize endpoint
+        //initial request to get authorized | redirect to authorize endpoint
         window.location.replace(this.oauthServer + '/authorize?' + this.getAuthorizeParams())
       }
     );

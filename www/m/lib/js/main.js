@@ -22,6 +22,7 @@
       document.getElementById('successMsg').hidden = false;
       document.getElementById("errorMsg").hidden = true;
       document.getElementById('navbar').hidden = false;
+      document.getElementById('myiframe').hidden = false;
       let lbtn = document.getElementById('logoutBtn');
       lbtn.hidden = false;
       lbtn.onclick = function (event) {
@@ -36,6 +37,7 @@
       let ele = document.getElementById("errorMsg");
       ele.innerText = error.error;
       ele.hidden = false;
+      document.getElementById('myiframe').hidden = true;
       document.getElementById('navbar').hidden = true;
       document.getElementById('logoutBtn').hidden = true;
       document.getElementById('successMsg').hidden = true;
