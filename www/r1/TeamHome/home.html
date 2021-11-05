@@ -5,26 +5,14 @@
     <title>Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <!-- import sha256.js -->
-    <script src="/lib/js/sha256.js"></script>
-    <!-- import tokenManager.js -->
-    <script src="/lib/js/iframeTokenManager.js"></script>
-    <!-- calls the authorize URL -->
-
 </head>
 <body>
-<div hidden id="error" class="bg-light p-5 rounded" >
-    <p>please login</p>
-</div>
-
 <div hidden id="content">
     <div class="bg-light p-5 rounded">
         <div class="col-sm-8 mx-auto">
             <h1>ID Token Payload</h1>
             <p>from R1 requested after each interaction</p>
-            <pre id="tokenPayloadR1">
-
-            </pre>
+            <pre id="tokenPayloadR1"></pre>
 
             <h1>Explanation</h1>
             <p>
@@ -71,8 +59,8 @@
 
         </div>
     </div>
-
 </div>
+<div hidden id="errorMsg" class="container alert alert-danger mt-5" role="alert"></div>
 </body>
 <!-- import of bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -80,11 +68,15 @@
         crossorigin="anonymous"></script>
 <!-- import of the microfrontend.js -->
 <script src="/lib/js/microfrontend.js"></script>
+<!-- import sha256.js -->
+<script src="/lib/js/sha256.js"></script>
+<!-- import tokenManager.js -->
+<script src="/lib/js/iframeTokenManager.js"></script>
+<!-- calls the authorize URL -->
 <script>
     let iframeTokenManager = new IframeTokenManager('r1', 'http://localhost:8080');
-    let token = iframeTokenManager.loadToken().then(
+    iframeTokenManager.loadToken().then(
         (token) => {
-            console.log(token);
             fetch('/api.php', {
                 mode: 'cors',
                 credentials: 'include',
@@ -92,15 +84,16 @@
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'Authorization': 'Bearer ' + token
                 },
-            }).then(response => response.text())
+            }).then(response => response.json())
                 .then(data => {
                     document.getElementById("content").hidden = false;
-                    document.getElementById("error").hidden = true;
-                    document.getElementById('tokenPayloadR1').innerText = data;
+                    document.getElementById("errorMsg").hidden = true;
+                    document.getElementById('tokenPayloadR1').innerText = JSON.stringify(data, undefined, 2);
                 })
         }
     ).catch(error => {
-            document.getElementById("error").hidden = false;
+            document.getElementById('errorMsg').innerText = error;
+            document.getElementById("errorMsg").hidden = false;
             document.getElementById("content").hidden = true;
         }
     );

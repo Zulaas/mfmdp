@@ -40,9 +40,8 @@ class IframeTokenManager {
         //request to get ID and Access token from token Endpoint
         this.postData(this.oauthServer + '/oauth/token', params)
           .then(data => {
-            console.log(data);
             window.history.replaceState({}, '', location.pathname);
-            return resolve(data.access_token) //Todo ID Token
+            return resolve(data.id_token)
           })
           .catch((error) => {
             return reject(error)
@@ -63,7 +62,7 @@ class IframeTokenManager {
         'code_challenge_method': 'S256',
         'client_id': this.clientId,
         'redirect_uri': location.origin + location.pathname,
-        'scope': 'openid profile',
+        'scope': 'openid email',
         'state': state,
         'prompt': 'none'
       }
@@ -77,13 +76,6 @@ class IframeTokenManager {
     return Object.keys(params).map((key) => {
       return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
     }).join('&');
-  }
-
-  base64URLEncode(str) {
-    return str.toString('base64')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=/g, '');
   }
 
   //generates crypto save random String
