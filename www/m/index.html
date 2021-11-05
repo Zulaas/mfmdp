@@ -16,7 +16,7 @@
     <script src="/lib/js/tokenManager.js"></script>
     <!-- calls the authorize URL -->
     <script>
-        let tokenManager = new TokenManager('client1', 'http://192.168.178.20', 'token')
+        let tokenManager = new TokenManager('client1', 'http://localhost:8080', 'token')
         tokenManager.loadToken();
         //document.getElementById('tokenPayloadM').innerText = sessionStorage.getItem('token');
         console.log('token ready')

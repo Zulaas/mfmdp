@@ -80,8 +80,6 @@ class TokenManager {
     }
     //redirect to authorize endpoint
     window.location.replace(this.oauthServer + '/authorize?' + this.makeQueryParams(params))
-
-
   }
 
   //build query params urlencoded from array

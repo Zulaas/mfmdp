@@ -81,7 +81,7 @@
 <!-- import of the microfrontend.js -->
 <script src="/lib/js/microfrontend.js"></script>
 <script>
-    let iframeTokenManager = new IframeTokenManager('r1', 'http://192.168.178.20');
+    let iframeTokenManager = new IframeTokenManager('r1', 'http://localhost:8080');
     let token = iframeTokenManager.loadToken().then(
         (token) => {
             console.log(token);
