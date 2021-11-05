@@ -20,11 +20,9 @@ class TokenManager {
   //logout function
   logout() {
     sessionStorage.removeItem(this.sessionStorageIDTokenKey);
-    let params = {
-      'client_id': this.clientId,
-      'returnTo': 'http://m.tld'
-    };
-    window.location.replace(this.oauthServer + '/logout?' + this.makeQueryParams(params))
+    sessionStorage.removeItem('state');
+    sessionStorage.removeItem('verifier');
+    window.location.replace(this.oauthServer + '/logout?' + this.getLogoutParams())
   }
 
   //PKCE Flow function to get ID and Access Token
@@ -33,7 +31,11 @@ class TokenManager {
         //error Handling
         let urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('error') && urlParams.has('error_code')) {
-          return reject(urlParams.get('error'), urlParams.get('error_code'));
+          window.history.replaceState({}, '', location.pathname);
+          return reject({
+            'error': urlParams.get('error'),
+            'error_code': urlParams.get('error_code')
+          });
         }
 
         //check if we already have a token
@@ -73,6 +75,13 @@ class TokenManager {
     );
   }
 
+  getLogoutParams() {
+    return this.makeQueryParams({
+      'client_id': this.clientId,
+      'returnTo': 'http://m.tld'
+    });
+  }
+
   //get the essential parameters for requesting Token-Endpoint
   getTokenParams(urlParams) {
     let code = urlParams.get('code');
@@ -105,7 +114,7 @@ class TokenManager {
     sessionStorage.setItem("verifier", verifier);
     sessionStorage.setItem('state', state);
 
-    let params = {
+    return this.makeQueryParams({
       'response_type': 'code',
       'code_challenge': challenge,
       'code_challenge_method': 'S256',
@@ -113,8 +122,7 @@ class TokenManager {
       'redirect_uri': location.origin + location.pathname,
       'scope': 'openid',
       'state': state
-    }
-    return this.makeQueryParams(params)
+    });
   }
 
   //build query params urlencoded from array

@@ -24,7 +24,7 @@
       document.getElementById('navbar').hidden = false;
       let lbtn = document.getElementById('logoutBtn');
       lbtn.hidden = false;
-      lbtn.onclick = function(event){
+      lbtn.onclick = function (event) {
         tokenManager.logout();
       }
       window.setInterval(() => {
@@ -32,9 +32,9 @@
       }, 1000);
     }
   ).catch(error => {
-      console.log(error);
+      console.log(error.error_code);
       let ele = document.getElementById("errorMsg");
-      ele.innerText = error;
+      ele.innerText = error.error;
       ele.hidden = false;
       document.getElementById('navbar').hidden = true;
       document.getElementById('logoutBtn').hidden = true;

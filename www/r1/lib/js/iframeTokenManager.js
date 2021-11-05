@@ -12,7 +12,8 @@ class IframeTokenManager {
       //Error handling
       let urlParams = new URLSearchParams(window.location.search);
       if (urlParams.has('error') && urlParams.has('error_code')) {
-        return reject(urlParams.get('error'), urlParams.get('error_code'));
+        window.history.replaceState({}, '', location.pathname);
+        return reject({'error': urlParams.get('error'), 'error_code': urlParams.get('error_code')});
       }
 
       //if get redirected from authorize endpoint with code and state
@@ -46,7 +47,7 @@ class IframeTokenManager {
           .catch((error) => {
             return reject(error)
           });
-        return ;
+        return;
       }
 
       //initial request to get authorized

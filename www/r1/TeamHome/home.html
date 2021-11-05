@@ -84,15 +84,17 @@
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'Authorization': 'Bearer ' + token
                 },
-            }).then(response => response.json())
-                .then(data => {
-                    document.getElementById("content").hidden = false;
-                    document.getElementById("errorMsg").hidden = true;
-                    document.getElementById('tokenPayloadR1').innerText = JSON.stringify(data, undefined, 2);
-                })
+            }).then(response => {
+                response.json()
+            }).then(data => {
+                document.getElementById("content").hidden = false;
+                document.getElementById("errorMsg").hidden = true;
+                document.getElementById('tokenPayloadR1').innerText = JSON.stringify(data, undefined, 2);
+            })
         }
     ).catch(error => {
-            document.getElementById('errorMsg').innerText = error;
+            console.log(error.error_code)
+            document.getElementById('errorMsg').innerText = error.error;
             document.getElementById("errorMsg").hidden = false;
             document.getElementById("content").hidden = true;
         }
