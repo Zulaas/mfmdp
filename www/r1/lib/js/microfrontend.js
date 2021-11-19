@@ -4,7 +4,7 @@ class Microfrontend {
   static message(message) {
     //the origin of the target window should be restricted
     //in this case to http://m.tld to prevent other pages from receiving any of this messages
-    parent.postMessage(message, "http://m.tld");
+    parent.postMessage(message, "http://localhost");
   }
 
   //creates postMessage event for frame height

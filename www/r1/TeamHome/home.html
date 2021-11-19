@@ -89,7 +89,7 @@
             }).then(data => {
                 document.getElementById("content").hidden = false;
                 document.getElementById("errorMsg").hidden = true;
-                document.getElementById('tokenPayloadR1').innerText = JSON.stringify(data, undefined, 2);
+                document.getElementById('tokenPayloadR1').innerText = JSON.stringify(iframeTokenManager.parseJwt(data.id_token), undefined, 2);
             })
         }
     ).catch(error => {

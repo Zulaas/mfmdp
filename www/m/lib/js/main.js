@@ -1,14 +1,14 @@
 (() => {
   //creates router Object with mapped routes
   let router = new Router({
-    '/': 'http://r1.tld/TeamHome/home.html',
-    '/TeamKundenverwaltung/kundenverwaltung': 'http://r1.tld/TeamKundenverwaltung/kundenverwaltung.html',
-    '/TeamRechnung/rechnung': 'http://r2.tld/TeamRechnung/rechnung.html'
+    '/': 'http://localhost:81/TeamHome/home.html',
+    '/TeamKundenverwaltung/kundenverwaltung': 'http://localhost:81/TeamKundenverwaltung/kundenverwaltung.html',
+    '/TeamRechnung/rechnung': 'http://localhost:82/TeamRechnung/rechnung.html'
   })
   router.register();
 
   let iframe = document.getElementById('myiframe');
-  let origins = ['http://r1.tld', 'http://r2.tld'];
+  let origins = ['http://r1.tld', 'http://r2.tld', 'http://localhost:81', 'http://localhost:82'];
   let dispatcher = new Dispatcher(iframe, origins);
   console.log(dispatcher)
   dispatcher.addListener('adjust_frame_height', adjustFrameHeight)

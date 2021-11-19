@@ -85,7 +85,7 @@ class TokenManager {
   getLogoutParams() {
     return this.makeQueryParams({
       'client_id': this.clientId,
-      'returnTo': 'http://m.tld'
+      'returnTo': 'http://localhost:80'
     });
   }
 
@@ -112,22 +112,35 @@ class TokenManager {
     }
   }
 
+  //digest returns  a ArrayBuffer this converts the ArrayBuffer to a hex string.
+  async digestMessage(message) {
+    const msgUint8 = new TextEncoder().encode(message);                           // encode as (utf-8) Uint8Array
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);           // hash the message
+    const hashArray = Array.from(new Uint8Array(hashBuffer));                     // convert buffer to byte array
+     // convert bytes to hex string
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
   //building the query for the authorize endpoint
   getAuthorizeParams() {
-    let verifier = this.getRandomString(32)
     let state = this.getRandomString(32)
-    let challenge = Sha256.hash(verifier);
+    let code_verifier = this.getRandomString(32)
 
-    sessionStorage.setItem("verifier", verifier);
+    //let code_challenge = this.digestMessage(code_verifier).then(code_challenge => {return code_challenge} );
+
+
+    let code_challenge = Sha256.hash(code_verifier);
+
+    sessionStorage.setItem("verifier", code_verifier);
     sessionStorage.setItem('state', state);
 
     return this.makeQueryParams({
       'response_type': 'code',
-      'code_challenge': challenge,
+      'code_challenge': code_challenge,
       'code_challenge_method': 'S256',
       'client_id': this.clientId,
       'redirect_uri': location.origin + location.pathname,
-      'scope': 'openid',
+      'scope': 'openid profile email',
       'state': state
     });
   }
