@@ -27,7 +27,7 @@ class TokenManager {
 
   //PKCE Flow function to get ID and Access Token
   async loadToken() {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         //error Handling
         let urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('error') && urlParams.has('error_code')) {
@@ -52,7 +52,7 @@ class TokenManager {
         if (urlParams.has('code') && urlParams.has('state')) {
           //request to get ID and Access token from token Endpoint
           let params;
-          try{
+          try {
             params = this.getTokenParams(urlParams);
           } catch (e) {
             return reject({'error': e, 'error_code': 'exception'})
@@ -77,7 +77,9 @@ class TokenManager {
         }
 
         //initial request to get authorized | redirect to authorize endpoint
-        window.location.replace(this.oauthServer + '/authorize?' + this.getAuthorizeParams())
+        window.location.replace(this.oauthServer + '/authorize?' + await this.getAuthorizeParams().then(params => {
+          return params
+        }))
       }
     );
   }
@@ -122,14 +124,14 @@ class TokenManager {
   }
 
   //building the query for the authorize endpoint
-  getAuthorizeParams() {
+  async getAuthorizeParams() {
     let state = this.getRandomString(32)
     let code_verifier = this.getRandomString(32)
+    //only working over https and localhost
+    let code_challenge = await this.digestMessage(code_verifier).then(code_challenge => {return code_challenge} );
+    //for testing with http and hostname use this line
+    //let code_challenge = Sha256.hash(code_verifier);
 
-    //let code_challenge = this.digestMessage(code_verifier).then(code_challenge => {return code_challenge} );
-
-
-    let code_challenge = Sha256.hash(code_verifier);
 
     sessionStorage.setItem("verifier", code_verifier);
     sessionStorage.setItem('state', state);

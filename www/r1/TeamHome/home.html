@@ -77,20 +77,9 @@
     let iframeTokenManager = new IframeTokenManager('r1', 'http://localhost:8080');
     iframeTokenManager.loadToken().then(
         (token) => {
-            fetch('/api.php', {
-                mode: 'cors',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Authorization': 'Bearer ' + token
-                },
-            }).then(response => {
-                response.json()
-            }).then(data => {
-                document.getElementById("content").hidden = false;
-                document.getElementById("errorMsg").hidden = true;
-                document.getElementById('tokenPayloadR1').innerText = JSON.stringify(iframeTokenManager.parseJwt(data.id_token), undefined, 2);
-            })
+            document.getElementById("content").hidden = false;
+            document.getElementById("errorMsg").hidden = true;
+            document.getElementById('tokenPayloadR1').innerText = JSON.stringify(iframeTokenManager.parseJwt(token.id_token), undefined, 2);
         }
     ).catch(error => {
             console.log(error.error_code)
