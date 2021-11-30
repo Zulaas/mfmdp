@@ -1,4 +1,6 @@
 (() => {
+  let bc = new BroadcastChannel('central Logout');
+
   //creates router Object with mapped routes
   let router = new Router({
     '/': 'http://localhost:81/TeamHome/home.html',
@@ -26,7 +28,7 @@
       let lbtn = document.getElementById('logoutBtn');
       lbtn.hidden = false;
       lbtn.onclick = function (event) {
-        tokenManager.logout();
+        tokenManager.centralLogout(bc);
       }
       window.setInterval(() => {
         tokenManager.checkExpires();
@@ -44,6 +46,10 @@
     }
   );
 
+  bc.onmessage = function (ev) {
+    console.log('central logout');
+    tokenManager.logout()
+  }
 })();
 
 function adjustFrameHeight(data) {

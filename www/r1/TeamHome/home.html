@@ -79,10 +79,10 @@
         (token) => {
             document.getElementById("content").hidden = false;
             document.getElementById("errorMsg").hidden = true;
-            document.getElementById('tokenPayloadR1').innerText = JSON.stringify(iframeTokenManager.parseJwt(token.id_token), undefined, 2);
+            document.getElementById('tokenPayloadR1').innerText = JSON.stringify(iframeTokenManager.parseJwt(token), undefined, 2);
         }
     ).catch(error => {
-            console.log(error.error_code)
+            console.log('Error:', error)
             document.getElementById('errorMsg').innerText = error.error;
             document.getElementById("errorMsg").hidden = false;
             document.getElementById("content").hidden = true;

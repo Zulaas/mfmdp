@@ -17,12 +17,19 @@ class TokenManager {
     }
   }
 
+  centralLogout(bc){
+    bc.postMessage('logout');
+    this.logout()
+  }
+
   //logout function
-  logout() {
+  async logout() {
     sessionStorage.removeItem(this.sessionStorageIDTokenKey);
-    sessionStorage.removeItem('state');
-    sessionStorage.removeItem('verifier');
     window.location.replace(this.oauthServer + '/logout?' + this.getLogoutParams())
+  }
+
+  sleep(ms){
+    return new Promise(resolve => setTimeout(resolve,ms));
   }
 
   //PKCE Flow function to get ID and Access Token
@@ -59,8 +66,9 @@ class TokenManager {
           }
           this.postData(this.oauthServer + '/oauth/token', params)
             .then(data => {
-              sessionStorage.removeItem('state');
-              sessionStorage.removeItem('verifier');
+              console.log('before remove to get token: ', localStorage.getItem('state'))
+              localStorage.removeItem('state');
+              localStorage.removeItem('verifier');
               //replaces code and state
               window.history.replaceState({}, '', location.pathname);
               //saves id and access Token in sessionStorage
@@ -87,21 +95,22 @@ class TokenManager {
   getLogoutParams() {
     return this.makeQueryParams({
       'client_id': this.clientId,
-      'returnTo': 'http://localhost:80'
+      'returnTo': 'http://localhost'
     });
   }
 
   //get the essential parameters for requesting Token-Endpoint
   getTokenParams(urlParams) {
     let code = urlParams.get('code');
-    if (!sessionStorage.getItem('verifier')) {
+    if (!localStorage.getItem('verifier')) {
       throw 'verifier isn\'t set in sessionStorage';
     }
-    if (!sessionStorage.getItem('state')) {
+    if (!localStorage.getItem('state')) {
       throw 'state isn\'t set in sessionStorage';
     }
-    let verifier = sessionStorage.getItem('verifier');
-    let state = sessionStorage.getItem('state');
+    let verifier = localStorage.getItem('verifier');
+    let state = localStorage.getItem('state');
+    //console.log('valid check: sessionStorage', state, 'url: ', urlParams.get('state'))
     if (state !== urlParams.get('state')) {
       throw 'state is not valid';
     }
@@ -132,9 +141,11 @@ class TokenManager {
     //for testing with http and hostname use this line
     //let code_challenge = Sha256.hash(code_verifier);
 
+    console.log('set ver: ', code_verifier)
 
-    sessionStorage.setItem("verifier", code_verifier);
-    sessionStorage.setItem('state', state);
+    localStorage.setItem("verifier", code_verifier);
+    console.log('set: ', state)
+    localStorage.setItem('state', state);
 
     return this.makeQueryParams({
       'response_type': 'code',
@@ -179,9 +190,9 @@ class TokenManager {
   }
 
   parseJwt(token) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+    let base64Url = token.split('.')[1];
+    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    let jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
     return JSON.parse(jsonPayload);

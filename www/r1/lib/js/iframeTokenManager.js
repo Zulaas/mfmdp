@@ -19,14 +19,14 @@ class IframeTokenManager {
       //if get redirected from authorize endpoint with code and state
       if (urlParams.has('code') && urlParams.has('state')) {
         let code = urlParams.get('code');
-        if (!localStorage.getItem('verifier')) {
-          throw 'verifier isn\'t set in localStorage';
+        if (!sessionStorage.getItem('verifier')) {
+          throw 'verifier isn\'t set in sessionStorage';
         }
-        if (!localStorage.getItem('state')) {
-          throw 'state isn\'t set in localStorage';
+        if (!sessionStorage.getItem('state')) {
+          throw 'state isn\'t set in sessionStorage';
         }
-        let verifier = localStorage.getItem('verifier');
-        let state = localStorage.getItem('state');
+        let verifier = sessionStorage.getItem('verifier');
+        let state = sessionStorage.getItem('state');
         if (state !== urlParams.get('state')) {
           throw 'state is not valid';
         }
@@ -53,8 +53,8 @@ class IframeTokenManager {
       //initial request to get authorized
       let verifier = this.getRandomString(32)
       let state = this.getRandomString(32)
-      localStorage.setItem("verifier", verifier);
-      localStorage.setItem('state', state);
+      sessionStorage.setItem("verifier", verifier);
+      sessionStorage.setItem('state', state);
 
       let challenge = Sha256.hash(verifier);
       let params = {
