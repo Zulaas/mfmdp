@@ -31,7 +31,7 @@
         tokenManager.centralLogout(bc);
       }
       window.setInterval(() => {
-        tokenManager.checkExpires();
+        tokenManager.checkExpires() ? tokenManager.centralLogout(bc) : null;
       }, 1000);
     }
   ).catch(error => {

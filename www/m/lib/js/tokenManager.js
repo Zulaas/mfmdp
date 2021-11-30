@@ -12,9 +12,7 @@ class TokenManager {
     let token = sessionStorage.getItem(this.sessionStorageIDTokenKey);
     let payload = this.parseJwt(token);
     let currentTime = Math.floor(Date.now() / 1000)
-    if (payload.exp < currentTime) {
-      this.logout()
-    }
+    return payload.exp < currentTime;
   }
 
   centralLogout(bc){
