@@ -25,7 +25,7 @@ class Microfrontend {
   window.setInterval(() => {
     if (document.documentElement.scrollHeight === height)
       return;
-    height = document.documentElement.scrollHeight + 10 //Todo fix in DemoV1 eintragen
+    height = document.documentElement.scrollHeight + 10
     Microfrontend.adjust_frame_height(height)
   }, 100)
 })();

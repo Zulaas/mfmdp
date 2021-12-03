@@ -1,11 +1,11 @@
 class TokenManager {
 
-  constructor(clientId, oauthServer, sessionStorageIDTokenKey, sessionStorageAccessTokenKey) {
+  constructor(clientId, oauthServer, sessionStorageIDTokenKey, sessionStorageAccessTokenKey, scopes) {
     this.clientId = clientId;
     this.oauthServer = oauthServer;
     this.sessionStorageIDTokenKey = sessionStorageIDTokenKey;
     this.sessionStorageAccessTokenKey = sessionStorageAccessTokenKey;
-    // this.scopes = scopes; Todo initialize scopes als array und dann einfach an den request anhängen
+    this.scopes = scopes;
   }
 
   checkExpires() {
@@ -15,20 +15,16 @@ class TokenManager {
     return payload.exp < currentTime;
   }
 
-  centralLogout(bc){
+  centralLogout(bc) {
     bc.postMessage('logout');
     this.logout()
   }
 
-  //logout function
-  async logout() {
+  logout() {
     sessionStorage.removeItem(this.sessionStorageIDTokenKey);
     window.location.replace(this.oauthServer + '/logout?' + this.getLogoutParams())
   }
 
-  sleep(ms){
-    return new Promise(resolve => setTimeout(resolve,ms));
-  }
 
   //PKCE Flow function to get ID and Access Token
   async loadToken() {
@@ -64,7 +60,6 @@ class TokenManager {
           }
           this.postData(this.oauthServer + '/oauth/token', params)
             .then(data => {
-              console.log('before remove to get token: ', localStorage.getItem('state'))
               localStorage.removeItem('state');
               localStorage.removeItem('verifier');
               //replaces code and state
@@ -108,7 +103,6 @@ class TokenManager {
     }
     let verifier = localStorage.getItem('verifier');
     let state = localStorage.getItem('state');
-    //console.log('valid check: sessionStorage', state, 'url: ', urlParams.get('state'))
     if (state !== urlParams.get('state')) {
       throw 'state is not valid';
     }
@@ -126,7 +120,7 @@ class TokenManager {
     const msgUint8 = new TextEncoder().encode(message);                           // encode as (utf-8) Uint8Array
     const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);           // hash the message
     const hashArray = Array.from(new Uint8Array(hashBuffer));                     // convert buffer to byte array
-     // convert bytes to hex string
+    // convert bytes to hex string
     return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
   }
 
@@ -134,16 +128,15 @@ class TokenManager {
   async getAuthorizeParams() {
     let state = this.getRandomString(32)
     let code_verifier = this.getRandomString(32)
+    localStorage.setItem("verifier", code_verifier);
+    localStorage.setItem('state', state);
     //only working over https and localhost
-    let code_challenge = await this.digestMessage(code_verifier).then(code_challenge => {return code_challenge} );
+    let code_challenge = await this.digestMessage(code_verifier).then(code_challenge => {
+      return code_challenge
+    });
     //for testing with http and hostname use this line
     //let code_challenge = Sha256.hash(code_verifier);
 
-    console.log('set ver: ', code_verifier)
-
-    localStorage.setItem("verifier", code_verifier);
-    console.log('set: ', state)
-    localStorage.setItem('state', state);
 
     return this.makeQueryParams({
       'response_type': 'code',
@@ -151,7 +144,7 @@ class TokenManager {
       'code_challenge_method': 'S256',
       'client_id': this.clientId,
       'redirect_uri': location.origin + location.pathname,
-      'scope': 'openid profile email',
+      'scope': this.scopes,
       'state': state
     });
   }

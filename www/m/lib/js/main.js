@@ -1,4 +1,5 @@
 (() => {
+  //create Broadcast channel for central logout
   let bc = new BroadcastChannel('central Logout');
 
   //creates router Object with mapped routes
@@ -10,42 +11,38 @@
   router.register();
 
   let iframe = document.getElementById('myiframe');
-  let origins = ['http://r1.tld', 'http://r2.tld', 'http://localhost:81', 'http://localhost:82'];
+  let origins = [
+    'http://r1.tld',
+    'http://r2.tld',
+    'http://localhost:81',
+    'http://localhost:82'
+  ];
+  //Register Dispatcher event for frame adjustment
   let dispatcher = new Dispatcher(iframe, origins);
-  console.log(dispatcher)
   dispatcher.addListener('adjust_frame_height', adjustFrameHeight)
   dispatcher.register()
 
   //starts the PKCE Flow
-  let tokenManager = new TokenManager('client1', 'http://localhost:8080', 'ID-Token', 'Access-Token')
+  let scopes = 'openid email profile';
+  let tokenManager = new TokenManager(
+    'client1',
+    'http://localhost:8080',
+    'ID-Token',
+    'Access-Token',
+    scopes
+  );
   tokenManager.loadToken().then(
     (data) => {
-      document.getElementById('tokenPayload').innerText = JSON.stringify(tokenManager.parseJwt(data.id_token), undefined, 2);
-      document.getElementById('successMsg').hidden = false;
-      document.getElementById("errorMsg").hidden = true;
-      document.getElementById('navbar').hidden = false;
-      document.getElementById('myiframe').hidden = false;
-      let lbtn = document.getElementById('logoutBtn');
-      lbtn.hidden = false;
-      lbtn.onclick = function (event) {
-        tokenManager.centralLogout(bc);
-      }
-      window.setInterval(() => {
-        tokenManager.checkExpires() ? tokenManager.centralLogout(bc) : null;
-      }, 1000);
+      this.setSuccessText(tokenManager, data.id_token, scopes);
+      this.setLogoutButton(tokenManager, bc);
+      this.setLogoutInterval(tokenManager, bc);
     }
   ).catch(error => {
-      console.log(error.error_code);
-      let ele = document.getElementById("errorMsg");
-      ele.innerText = error.error;
-      ele.hidden = false;
-      document.getElementById('myiframe').hidden = true;
-      document.getElementById('navbar').hidden = true;
-      document.getElementById('logoutBtn').hidden = true;
-      document.getElementById('successMsg').hidden = true;
+      this.setErrorText(error);
     }
   );
 
+  //register Broadcast channel function for central logout
   bc.onmessage = function (ev) {
     console.log('central logout');
     tokenManager.logout()
@@ -60,6 +57,43 @@ function adjustFrameHeight(data) {
       iframe.style.height = data.height + "px";
     }
   }
+}
+
+function setLogoutInterval(tokenManager, bc) {
+  window.setInterval(() => {
+    //if one token expires initialize a central logout for all taps
+    tokenManager.checkExpires() ? tokenManager.centralLogout(bc) : null;
+  }, 1000);
+}
+
+function setLogoutButton(tokenManager, bc) {
+  document.getElementById('logoutBtn').onclick = function (event) {
+    tokenManager.centralLogout(bc);
+  }
+}
+
+function setSuccessText(tokenManager, token, scopes) {
+  document.getElementById('tokenPayload').innerText = JSON.stringify(tokenManager.parseJwt(token), undefined, 2);
+  this.changeHiddenAttribute(false);
+  document.getElementById("scopes").innerText = scopes;
+  let split = token.split('.');
+  document.getElementById("header").innerText = split[0];
+  document.getElementById("payload").innerText = split[1];
+  document.getElementById("footer").innerText = split[2];
+}
+
+function setErrorText(error) {
+  console.log(error.error_code);
+  document.getElementById("errorMsg").innerText = error.error;
+  this.changeHiddenAttribute(true);
+}
+
+function changeHiddenAttribute(type) {
+  document.getElementById('successMsg').hidden = type;
+  document.getElementById("errorMsg").hidden = !(type);
+  document.getElementById('navbar').hidden = type;
+  document.getElementById('myiframe').hidden = type;
+  document.getElementById('logoutBtn').hidden = type;
 }
 
 

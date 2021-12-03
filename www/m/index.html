@@ -10,8 +10,10 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!-- Custom styles for this template -->
     <link href="/lib/css/navbar.css" rel="stylesheet">
-    <!-- Custom styles for iframe -->
+    <!-- Custom styles for iframe element-->
     <link href="/lib/css/iframe.css" rel="stylesheet">
+    <!-- Custom styles for pre element -->
+    <link href="/lib/css/pre.css" rel="stylesheet">
 </head>
 <body>
 
@@ -40,7 +42,7 @@
                     </li>
                 </ul>
                 <div class="col-md-3 text-end">
-                    <button hidden id="logoutBtn" type="button" class="btn btn-outline-primary me-2" >Logout
+                    <button hidden id="logoutBtn" type="button" class="btn btn-outline-primary me-2">Logout
                     </button>
                 </div>
             </div>
@@ -50,9 +52,26 @@
     <div hidden id="successMsg" class="container mb-5">
         <div class="bg-light p-5 rounded">
             <div class="col-sm-8 mx-auto">
-                <h1>ID Token Payload</h1>
-                <p>from M thats saved in sessionStorage (Requested scopes: openid)</p>
-                <pre id="tokenPayload"></pre>
+                <div class="row text-center">
+                    <h1>SPA</h1>
+                    <p>requested scopes: </p>
+                    <p id="scopes"></p>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <h2>ID Token Payload decoded</h2>
+                        <p>from M that's saved in sessionStorage</p>
+                        <pre id="tokenPayload"></pre>
+                    </div>
+                    <div class="col-6">
+                        <h2>ID Token encoded and separated</h2>
+                        <pre id="header"></pre>
+                        <pre>.</pre>
+                        <pre id="payload"></pre>
+                        <pre>.</pre>
+                        <pre id="footer"></pre>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
