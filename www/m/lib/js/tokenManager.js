@@ -22,6 +22,7 @@ class TokenManager {
 
   logout() {
     sessionStorage.removeItem(this.sessionStorageIDTokenKey);
+    console.log("redirect to logout endpoint")
     window.location.replace(this.oauthServer + '/logout?' + this.getLogoutParams())
   }
 
@@ -43,6 +44,7 @@ class TokenManager {
         if (sessionStorage.getItem(this.sessionStorageIDTokenKey) &&
           sessionStorage.getItem(this.sessionStorageAccessTokenKey)) {
           this.checkExpires(); //check if token isn't expired
+          console.log("get token out of storage")
           return resolve({
             'id_token': sessionStorage.getItem(this.sessionStorageIDTokenKey),
             'access_token': sessionStorage.getItem(this.sessionStorageAccessTokenKey)
@@ -58,6 +60,7 @@ class TokenManager {
           } catch (e) {
             return reject({'error': e, 'error_code': 'exception'})
           }
+          console.log("send request to token endpoint")
           this.postData(this.oauthServer + '/oauth/token', params)
             .then(data => {
               localStorage.removeItem('state');
@@ -78,6 +81,7 @@ class TokenManager {
         }
 
         //initial request to get authorized | redirect to authorize endpoint
+        console.log("redirect to authorize endpoint")
         window.location.replace(this.oauthServer + '/authorize?' + await this.getAuthorizeParams().then(params => {
           return params
         }))
