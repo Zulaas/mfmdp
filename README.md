@@ -12,6 +12,5 @@ After all instructions have been followed, the project can start on the console 
     $ kickstart
 ```
 
-After starting the container, the website can be opened via the following [link](http://m.tld)
+After starting the container, the website can be opened via the following [link](http://localhost)
 
-The displayed page gives further information about the functionality of the project.
