@@ -1,1 +1,1 @@
-KICKSTART_PORTS="80:80/tcp;81:80/tcp;82:80/tcp"
+KICKSTART_PORTS="80:80/tcp;81:81/tcp;82:82/tcp"

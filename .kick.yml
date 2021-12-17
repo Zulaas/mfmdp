@@ -1,5 +1,5 @@
 version: 1
-from: "nfra/kickstart-flavor-php:unstable"
+from: "ghcr.io/nfra-project/kickstart-flavor-php:unstable"
 
 packages: ["php8.0-curl", "php8.0-http", "php8.0-raphf", "php8.0-xml"]
 

@@ -4,7 +4,7 @@ class Microfrontend {
   static message(message) {
     //the origin of the target window should be restricted
     //in this case to http://m.tld to prevent other pages from receiving any of this messages
-    parent.postMessage(message, "http://m.tld");
+    parent.postMessage(message, "http://localhost");
   }
 
   //creates postMessage event for frame height
@@ -25,7 +25,7 @@ class Microfrontend {
   window.setInterval(() => {
     if (document.documentElement.scrollHeight === height)
       return;
-    height = document.documentElement.scrollHeight
+    height = document.documentElement.scrollHeight + 10
     Microfrontend.adjust_frame_height(height)
   }, 100)
 })();

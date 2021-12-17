@@ -1,0 +1,16 @@
+version: "3"
+services:
+  key4s:
+    image: ghcr.io/micx-io/micx-key4s:0.1
+    ports:
+      - "8080:80"
+    networks:
+      - mfmdp
+  redis:
+    image: redis
+    networks:
+      - mfmdp
+
+networks:
+  mfmdp:
+    external: true
